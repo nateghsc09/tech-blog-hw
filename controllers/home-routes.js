@@ -1,6 +1,8 @@
 const router = require('express').Router();
-const { Post, User, Comment } = require('../models');
+const { Article, User, Comment } = require('../models');
 
+
+// GET all articles
 router.get('/', async (req, res) => {
   try {
       const dbArticleData = await Article.findAll({
@@ -26,8 +28,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET one article
 
+// Get article by id
 router.get('/article/:id', async (req, res) => {
   try {
       const dbArticleData = await Article.findByPk(req.params.id, {
@@ -70,27 +72,21 @@ router.get('/article/:id', async (req, res) => {
   }
 });
 
+
+//Redirect through if logged in, otherwse show login
+
 router.get('/login', (req, res) => {
   if (req.session.loggedIn) {
       res.redirect('/');
       console.log(req.session.loggedIn);
       return;
   }
-  // Otherwise, render the 'login' template
+ 
   res.render('login');
 });
 
 
-// router.get('/signup', async (req, res) => {
-//     try {
-
-//     } catch (error) {
-
-//     }
-// });
-
-
-// Populate Dashboard for the logged in User
+//Dashboard of logged in user
 
 router.get('/dashboard', async (req, res) => {
   try {
@@ -105,7 +101,7 @@ router.get('/dashboard', async (req, res) => {
       res.render('dashboard', {
           user,
           loggedIn: req.session.loggedIn,
-          // loggedIn: true,
+         
       });
 
       console.log(user);
