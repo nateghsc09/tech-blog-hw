@@ -1,0 +1,64 @@
+<div class="card container-fluid">
+    <div class="d-flex justify-content-between card-header row ">
+        <div class="col-12 col-lg-3">
+            {{ format_date article.createdAt}}
+        </div>
+        <div class="col-12 col-lg-3"> Posted by {{article.user.username}}</div>
+    </div>
+    <form class="card-body article-update-form">
+        <div class="form-group">
+            <input type="hidden" name="specific-article" id="specific-article" value="{{article.id}}" />
+            <label for="article-title" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10 article-form-title">
+                <input type="text" {{#unless owner}}readonly{{/unless}} class="form-control-plaintext"
+                    id="article-title" value="{{article.title}}">
+            </div>
+        </div>
+        
+        {{#if owner}}
+        <div class="input-group" ><span class="textarea" id="article-content" role="textbox" value="{{article.content}}" contenteditable>{{article.content}}</span></div>
+        {{else}}
+        <p>{{article.content}}</p>
+        {{/if}}
+
+    </form>
+    {{#if owner}}
+    <div class="d-flex justify-content-start align-items-center">
+        <button class="btn btn-success m-2" type="submit" id="updateBtn">Update</button>
+        <button class="btn btn-danger delete-btn m-2" id="deleteBtn">Delete</button>
+    </div>
+    {{/if}}
+</div>
+
+</br>
+
+</br>
+
+{{#unless loggedIn}}
+<p>Must be <a href="/login">logged in</a> to leave a comment.</p>
+{{/unless}}
+
+{{#if loggedIn}}
+
+<form class="form post-comment d-flex flex-column justify-content-start">
+    <div class="form-group">
+        <label for="comment">Comment:</label>
+        <textarea class="form-control" type="textarea" id="comment"></textarea>
+    </div>
+    <input type="hidden" name="post" id="post" value="{{article.id}}" />
+    <div class="form-group">
+        <button class="btn btn-primary mt-3 mb-5" type="submit" id="postComment">Post Comment</button>
+    </div>
+</form>
+{{/if}}
+<h5>Comments:</h5>
+{{#each article.comments as |comment|}}
+<div class="card comment">
+    <div class="card-body">
+        <h6 class="card-text">{{comment.body}}</h6>
+        <p class="card-text">- {{comment.user.username}}</p>
+    </div>
+</div>
+{{/each}}
+
+<script src="../js/article.js"></script>
