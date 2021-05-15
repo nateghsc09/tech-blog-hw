@@ -1,1 +1,1 @@
-# tech-blog-hw
+# tech-blog
